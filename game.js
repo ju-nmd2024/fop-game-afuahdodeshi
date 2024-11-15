@@ -2,23 +2,10 @@ function setup() {
   createCanvas(800, 600);
 }
 
-function startScreen(x,y){
-  fill(0,0,200);
-  text('Start Game');
-  rect(100,100,100,100);
-}
 
-function gameScreen(){
+let state = "start";
+let gameTimer = 0;
 
-}
-
-function endScreen(){
-background(0,0,255);
-}
-
-// function draw() {
-//   background(255, 140, 0);
-// }
 let characterX = 320;
 let characterY = 100;
 
@@ -28,29 +15,88 @@ let cloudY = 100;
 let grassX = 530;
 let grassY = 500;
 
-// gravity logic variable
+
 let velocityY = 0.2;
 let acceleration = 0.1;
 
 let gameState = true;
 
 
-function drawCloud(cloudX,cloudY) {
-  noStroke();
-  fill(255);
-   
-  ellipse(cloudX, cloudY, 80, 70);  
-  ellipse(cloudX-40, cloudY+20, 80, 50);  
-  ellipse(cloudX+40, cloudY+20, 80, 50);  
-  ellipse(cloudX, cloudY+20, 60, 60);   
-  ellipse(cloudX-60, cloudY, 70, 50);   
-  ellipse(cloudX+30, cloudY, 70, 50);  
+function startScreen() {
+  background(200, 200, 255);
+  textSize(32);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("Start Game", width / 2, height / 2 - 50);
+  textSize(24);
+  text("Click anywhere to start", width / 2, height / 2 + 20);
 }
 
-function drawGrass(grassX,grassY) {
-  fill(34,139,34);
-  stroke(34,139,34);
-   rect(grassX-258,grassY+80,100,80);
+
+function gameScreen() {
+  background(135, 206, 235); 
+  drawGrass(grassX, grassY);
+  character(characterX, characterY);
+
+
+  for (let i = 0; i < 5; i++) {
+    drawCloud(cloudX - i * 180, cloudY);
+  }
+
+  if (gameState === true) {
+   // gravity logic
+   characterY = characterY + velocityY;
+   velocityY = velocityY + acceleration;
+
+    if (mouseIsPressed) {
+      velocityY -= 0.7;
+    }
+
+    //  first 8 lines of code below gotten from chatgpt
+// https://chatgpt.com/share/6737182d-f250-8004-868d-2287df0e143a
+// landing measurements
+if (characterY > 515) {
+  if (Math.abs(velocityY) > 5) { 
+    console.log("Crash! Game Over.");
+    resultMessage = "Game Over! You Lose.";
+  } else {
+    console.log("Soft landing! You Win!");
+    resultMessage = "Game Over! You Win.";
+  }
+  gameState = false; // Stop gameplay
+  state = "result";  // Transition to the end screen
+}
+
+   
+    if (keyIsDown(37)) characterX -= 3; 
+    if (keyIsDown(39)) characterX += 3;
+    if (keyIsDown(32)) velocityY -= 0.7; 
+  }
+
+  
+}
+
+
+function endScreen() {
+  background(50);
+  fill(255);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text(resultMessage, width / 2, height / 2 - 50);
+}
+
+
+function drawCloud(x, y) {
+  noStroke();
+  fill(255);
+  ellipse(x, y, 80, 70);
+  ellipse(x - 40, y + 20, 80, 50);
+  ellipse(x + 40, y + 20, 80, 50);
+}
+
+function drawGrass(x, y) {
+  fill(34, 139, 34);
+  rect(x - 258, y + 80, 100, 80);
 }
 
 
@@ -84,13 +130,13 @@ function character(x, y) {
   rect(-5, 0, 10, 35); 
   triangle(-12, 0, 12, 0, 0, 40); 
 
-  // Arms
+  // hands
   stroke(0);
   strokeWeight(1.5);
   line(-5, 0, -12, -30); 
   line(5, 0, 15, 10); 
 
-  // Hands (small circles)
+
   fill(255, 224, 189); 
   ellipse(-12, -30, 5, 5); 
   ellipse(15, 10, 5, 5); 
@@ -106,83 +152,28 @@ function character(x, y) {
   pop();
 }
 
-
 function draw() {
-  background(135, 206, 235); 
-  drawGrass(grassX, grassY);
-  drawCloud();
- 
-  
-  for (let i = 0; i < 5; i++) {
-    drawCloud(cloudX - i * 180, cloudY);
-}
-
-function startScreen(x,y){
-  if (gameState === true){
-  
+  if (state === "start") {
+    startScreen();
+  } else if (state === "game") {
+    gameScreen();
+  } else if (state === "result") {
+    endScreen();
   }
 }
-  
-  character(characterX, characterY);
 
-  if (gameState === true) {
-    // gravity logic
-    characterY = characterY + velocityY;
-    velocityY = velocityY + acceleration;
-
-    if (mouseIsPressed) { 
-      velocityY = velocityY - 0.7;
-    }        
-
-//  first 8 lines of code below gotten from chatgpt
-// https://chatgpt.com/share/6737182d-f250-8004-868d-2287df0e143a
-// landing measurements
-    if (characterY > 515) {
-      if (Math.abs(velocityY) > 5) { 
-        console.log("Crash! Game Over.");
-        gameState = false;
-      } else {
-        console.log("Soft landing! You Win!");
-        gameState = false;
-      }
-    } 
-    
-
-
-
-    if (characterY > 530) {
-      gameState = false;
-      console.log("");
-    }
-
-    // if (characterY > 50) {
-    //   gameState = false;
-    //   console.log(" You didn't touch the grass");
-    // }
-    // Key Movement controls
-    if (keyIsDown(38) && characterY >= 100) { 
-      velocityY = -3;
-    }
-    }
-    if (keyIsDown(37)) {
-      characterX -= 3; 
-    }
-    if (keyIsDown(39)) {
-      characterX += 3; 
-    }
-    if (keyIsDown(32)) { 
-      velocityY = velocityY - 0.7; 
-    }
-  }          
-
-
-  function keyPressed() {
-    if (gameState === false && key === ' ') {
-      gameState = true;
-      characterY = 100;
-      velocityY = 0.2;
-      console.log("Game Restarted");
-    }
+function mouseClicked() {
+  if (state === "start") {
+    state = "game";
+  } else if (state === "result") {
+    state = "start";
+    resetGame();
   }
+}
 
-       
+
+function resetGame() {
+  characterY = 100;
+  velocityY = 0.2;
+  gameState = true;
+}
