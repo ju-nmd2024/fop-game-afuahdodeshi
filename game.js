@@ -2,8 +2,9 @@ function setup() {
   createCanvas(800, 600);
 }
 
-function startScreen(){
+function startScreen(x,y){
   fill(0,0,200);
+  text('Start Game');
   rect(100,100,100,100);
 }
 
@@ -24,6 +25,9 @@ let characterY = 100;
 let cloudX = 630;
 let cloudY = 100;
 
+let grassX = 530;
+let grassY = 500;
+
 // gravity logic variable
 let velocityY = 0.2;
 let acceleration = 0.1;
@@ -41,6 +45,12 @@ function drawCloud(cloudX,cloudY) {
   ellipse(cloudX, cloudY+20, 60, 60);   
   ellipse(cloudX-60, cloudY, 70, 50);   
   ellipse(cloudX+30, cloudY, 70, 50);  
+}
+
+function drawGrass(grassX,grassY) {
+  fill(34,139,34);
+  stroke(34,139,34);
+   rect(grassX-258,grassY+80,100,80);
 }
 
 
@@ -99,12 +109,19 @@ function character(x, y) {
 
 function draw() {
   background(135, 206, 235); 
-  drawCloud(cloudX,cloudY);
+  drawGrass(grassX, grassY);
+  drawCloud();
+ 
   
   for (let i = 0; i < 5; i++) {
     drawCloud(cloudX - i * 180, cloudY);
 }
 
+function startScreen(x,y){
+  if (gameState === true){
+  
+  }
+}
   
   character(characterX, characterY);
 
@@ -120,7 +137,7 @@ function draw() {
 //  first 8 lines of code below gotten from chatgpt
 // https://chatgpt.com/share/6737182d-f250-8004-868d-2287df0e143a
 // landing measurements
-    if (characterY > 450) {
+    if (characterY > 515) {
       if (Math.abs(velocityY) > 5) { 
         console.log("Crash! Game Over.");
         gameState = false;
@@ -129,11 +146,19 @@ function draw() {
         gameState = false;
       }
     } 
+    
 
-    if (characterY > 450) {
+
+
+    if (characterY > 530) {
       gameState = false;
-      console.log("die");
+      console.log("");
     }
+
+    // if (characterY > 50) {
+    //   gameState = false;
+    //   console.log(" You didn't touch the grass");
+    // }
     // Key Movement controls
     if (keyIsDown(38) && characterY >= 100) { 
       velocityY = -3;
@@ -152,7 +177,7 @@ function draw() {
 
 
   function keyPressed() {
-    if (!gameState && key === ' ') {
+    if (gameState === false && key === ' ') {
       gameState = true;
       characterY = 100;
       velocityY = 0.2;
