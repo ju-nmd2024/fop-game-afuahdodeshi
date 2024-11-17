@@ -63,8 +63,8 @@ if (characterY > 515) {
     console.log("Soft landing! You Win!");
     resultMessage = "Game Over! You Win.";
   }
-  gameState = false; // Stop gameplay
-  state = "result";  // Transition to the end screen
+  gameState = false; 
+  state = "result"; 
 }
 
    
