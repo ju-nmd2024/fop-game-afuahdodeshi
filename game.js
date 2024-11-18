@@ -2,9 +2,8 @@ function setup() {
   createCanvas(800, 600);
 }
 
-
+// paramters
 let state = "start";
-let gameTimer = 0;
 
 let characterX = 320;
 let characterY = 100;
@@ -21,18 +20,23 @@ let acceleration = 0.1;
 
 let gameState = true;
 
-
+// start screen
 function startScreen() {
-  background(200, 200, 255);
+  background(135, 206, 235);
+  drawCloud(cloudX,cloudY);
+  for (let i = 0; i < 5; i++) {
+    drawCloud(cloudX - i * 180, cloudY);
+  }
+  drawGrass(grassX, grassY);
   textSize(32);
-  fill(0);
+  fill(255);
   textAlign(CENTER, CENTER);
-  text("Start Game", width / 2, height / 2 - 50);
+  text("Mary Poppins Lander", width / 2, height / 2 - 50);
   textSize(24);
   text("Click anywhere to start", width / 2, height / 2 + 20);
 }
 
-
+// game screen
 function gameScreen() {
   background(135, 206, 235); 
   drawGrass(grassX, grassY);
@@ -52,16 +56,16 @@ function gameScreen() {
       velocityY -= 0.7;
     }
 
-    //  first 8 lines of code below gotten from chatgpt
+    //  first 9 lines of code below gotten from chatgpt
 // https://chatgpt.com/share/6737182d-f250-8004-868d-2287df0e143a
 // landing measurements
 if (characterY > 515) {
   if (Math.abs(velocityY) > 5) { 
     console.log("Crash! Game Over.");
-    resultMessage = "Game Over! You Lose.";
+    resultMessage = "OH NO MARY POPPINS CRASHED!.";
   } else {
     console.log("Soft landing! You Win!");
-    resultMessage = "Game Over! You Win.";
+    resultMessage = "WOO HOO MARY POPPINS LANDED!";
   }
   gameState = false; 
   state = "result"; 
@@ -70,22 +74,27 @@ if (characterY > 515) {
    
     if (keyIsDown(37)) characterX -= 3; 
     if (keyIsDown(39)) characterX += 3;
-    if (keyIsDown(32)) velocityY -= 0.7; 
+    if (keyIsDown(38)) velocityY -= 0.7; 
   }
 
   
 }
 
-
+// end screen
 function endScreen() {
-  background(50);
+  background(135, 206, 235);
+  drawCloud(cloudX,cloudY);
+  for (let i = 0; i < 5; i++) {
+    drawCloud(cloudX - i * 180, cloudY);
+  }
+  drawGrass(grassX, grassY);
   fill(255);
   textSize(32);
   textAlign(CENTER, CENTER);
   text(resultMessage, width / 2, height / 2 - 50);
 }
 
-
+// code to draw my clouds
 function drawCloud(x, y) {
   noStroke();
   fill(255);
@@ -93,13 +102,13 @@ function drawCloud(x, y) {
   ellipse(x - 40, y + 20, 80, 50);
   ellipse(x + 40, y + 20, 80, 50);
 }
-
+//  code to draw my grass patch
 function drawGrass(x, y) {
   fill(34, 139, 34);
   rect(x - 258, y + 80, 100, 80);
 }
 
-
+// my character
 function character(x, y) {
   noStroke();
   push();
@@ -162,6 +171,7 @@ function draw() {
   }
 }
 
+// the clicking mechanism for so i'd be able to switch through screens
 function mouseClicked() {
   if (state === "start") {
     state = "game";
@@ -172,6 +182,7 @@ function mouseClicked() {
 }
 
 
+// to reset the game
 function resetGame() {
   characterY = 100;
   velocityY = 0.2;
