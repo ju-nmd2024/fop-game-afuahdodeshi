@@ -73,7 +73,7 @@ if (characterY > 515) {
    
     if (keyIsDown(37)) characterX -= 3; 
     if (keyIsDown(39)) characterX += 3;
-    if (keyIsDown(38)) velocityY -= 0.7; 
+    if (keyIsDown(32)) velocityY -= 0.7; 
   }
 
   
