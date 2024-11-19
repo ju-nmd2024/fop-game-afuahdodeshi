@@ -61,10 +61,12 @@ function gameScreen() {
 if (characterY > 515) {
   if (Math.abs(velocityY) > 5) { 
     console.log("Crash! Game Over.");
-    resultMessage = "OH NO MARY POPPINS CRASHED!.";
+    resultMessage = "OH NO MARY POPPINS CRASHED!\nClick anywhere to restart!";
+    textSize(12);
+    text("Click anywhere to start", width / 2, height / 2 + 20);
   } else {
     console.log("Soft landing! You Win!");
-    resultMessage = "WOO HOO MARY POPPINS LANDED!";
+    resultMessage = "WOO HOO MARY POPPINS LANDED!\nClick anywhere to restart!";
   }
   gameState = false; 
   state = "result"; 
