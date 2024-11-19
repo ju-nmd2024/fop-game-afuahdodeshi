@@ -10,7 +10,6 @@ let characterY = 100;
 
 let cloudX = 630;
 let cloudY = 100;
-
 let grassX = 530;
 let grassY = 500;
 
@@ -171,7 +170,7 @@ function draw() {
   }
 }
 
-// the clicking mechanism for so i'd be able to switch through screens
+// the clicking mechanism for it so i'd be able to switch through screens
 function mouseClicked() {
   if (state === "start") {
     state = "game";
